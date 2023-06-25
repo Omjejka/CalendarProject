@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,8 +21,15 @@ private slots:
 
     void on_calendarWidget_selectionChanged();
 
+    void on_saveB_clicked();
+
+    void DButton_Pressed();
+
+    void on_redactB_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QDialog redact;
 };
 
 
