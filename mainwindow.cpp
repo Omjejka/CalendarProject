@@ -43,6 +43,10 @@ void MainWindow::on_addB_clicked()
 
     connect(checkB[cnt], SIGNAL(clicked()), this, SLOT(DButton_Pressed()));
 
+    redact.setModal(1);
+    redact.show();
+
+
     cnt++;
 }
 
