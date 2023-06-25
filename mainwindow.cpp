@@ -1,8 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "fstream"
+
+
 QPushButton *checkB[50];
 int cnt = 0;
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -11,13 +14,43 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->eventLay->setSpacing(5); //Установка пространства
+
+    using namespace std;{
+        int countstr = 3;
+        string str;
+        fstream file("DataBase.txt", ios::in);
+        if(file.is_open()){
+            while(getline(file, str, ';')){
+                if(!(countstr % 3)){
+                    addingButton(QString::fromStdString(str));
+                }else if ((countstr % 3) == 1){
+                }else{
+
+                }
+                countstr++;
+            }
+        }
+    }
 }
 
 
-QString info(QDate a){
-    QString name = a.toString("dd.MM") + " | " + "Пусто";
-    return name;
-};
+
+void MainWindow::addingButton(QString beta){
+    checkB[cnt] = new QPushButton;
+    checkB[cnt]->setFixedHeight(30);
+    QDate date = ui->calendarWidget->selectedDate();
+    checkB[cnt]->setStyleSheet("text-align: left");
+    checkB[cnt]->setText(date.toString("dd.MM") + " | " + beta);
+    checkB[cnt]->setCheckable(1);
+    ui->eventLay->setSpacing(5);
+    ui->eventLay->setAlignment(Qt::AlignTop);
+    ui->eventLay->addWidget(checkB[cnt]);
+
+    connect(checkB[cnt], SIGNAL(clicked()), this, SLOT(DButton_Pressed()));
+    cnt++;
+
+}
+
 
 
 MainWindow::~MainWindow()
@@ -28,26 +61,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_addB_clicked()
 {
-    checkB[cnt] = new QPushButton;
-    checkB[cnt]->setFixedHeight(25);
-    checkB[cnt]->setText(info(ui->calendarWidget->selectedDate()));
-    checkB[cnt]->setStyleSheet("text-align: left");
-    checkB[cnt]->setCheckable(1);
-    ui->eventLay->setSpacing(5);
-    ui->eventLay->setAlignment(Qt::AlignTop);
-    ui->eventLay->addWidget(checkB[cnt]);
+    addingButton();
 
+    redact = new Redact;
+    redact->setModal(1);
+    redact->show();
 
-
-
-
-    connect(checkB[cnt], SIGNAL(clicked()), this, SLOT(DButton_Pressed()));
-
-    redact.setModal(1);
-    redact.show();
-
-
-    cnt++;
+    connect(this, SIGNAL(signal()), redact, SLOT(slot()));
 }
 
 
@@ -59,6 +79,25 @@ void MainWindow::DButton_Pressed(){
     }
     QPushButton* dymB = qobject_cast<QPushButton*>(sender());
     dymB->setChecked(1);
+    int mas = 0;
+    while(dymB != *(checkB+mas)){ // Через цикл while ищем индекс кнопки
+        mas++;
+    }
+    using namespace std;{
+        int count = (3 * mas) + 2;
+        string str;
+        fstream file("DataBase.txt", ios::in);
+        if(file.is_open()){
+            while(getline(file, str, ';')){
+                if (count == 0){
+                    ui->plainTextEdit->setPlainText(QString::fromStdString(str));
+
+                }
+                count--;
+            }
+        }
+    }
+
 }
 
 void MainWindow::on_calendarWidget_selectionChanged()
@@ -94,8 +133,9 @@ void MainWindow::on_saveB_clicked()
 void MainWindow::on_redactB_clicked()
 {
     QPushButton* dymB = qobject_cast<QPushButton*>(sender());
-    redact.setModal(1);
-    redact.show();
+    redact = new Redact;
+    redact->setModal(1);
+    redact->show();
 
 
 }

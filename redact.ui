@@ -34,7 +34,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="nameEd">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -53,7 +53,7 @@
     <string>Название</string>
    </property>
   </widget>
-  <widget class="QDateEdit" name="dateEdit">
+  <widget class="QDateEdit" name="dateEd">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -73,7 +73,7 @@
     </date>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit">
+  <widget class="QPlainTextEdit" name="desEd">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -86,7 +86,7 @@
     <string>Описание события....</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit_2">
+  <widget class="QPlainTextEdit" name="tagEd">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -99,7 +99,7 @@
     <string>Добавить Теги</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="saveB">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -112,7 +112,7 @@
     <string>Сохранить</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="canB">
    <property name="geometry">
     <rect>
      <x>269</x>

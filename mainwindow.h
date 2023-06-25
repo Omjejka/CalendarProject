@@ -16,6 +16,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void addingButton(QString beta="Пусто");
 private slots:
     void on_addB_clicked();
 
@@ -29,7 +30,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Redact redact;
+    Redact *redact;
+
+signals:
+    void signal();
 };
 
 
