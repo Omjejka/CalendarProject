@@ -13,13 +13,17 @@ Redact::~Redact()
     delete ui;
 }
 
-void Redact::slot()
-{
-
-}
 
 void Redact::on_canB_clicked()
 {
     Redact::close();
+}
+
+
+
+
+void Redact::on_saveB_clicked()
+{
+
 }
 

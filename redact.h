@@ -18,10 +18,11 @@ public:
 private:
     Ui::Redact *ui;
 
-public slots:
-    void slot();
 private slots:
     void on_canB_clicked();
+
+    void on_saveB_clicked();
+
 };
 
 #endif // REDACT_H
