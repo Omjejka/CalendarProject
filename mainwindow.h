@@ -34,6 +34,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Redact *redact;
+
+signals:
+    void selDate(QDate alpha);
 };
 
 

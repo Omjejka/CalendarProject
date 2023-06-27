@@ -13,6 +13,11 @@ Redact::~Redact()
     delete ui;
 }
 
+void Redact::getDate(QDate alpha)
+{
+    ui->dateEd->setDate(alpha);
+}
+
 
 void Redact::on_canB_clicked()
 {

@@ -17,6 +17,9 @@ public:
     explicit Redact(QWidget *parent = nullptr);
     ~Redact();
 
+public slots:
+    void getDate(QDate alpha);
+
 private:
     Ui::Redact *ui;
 

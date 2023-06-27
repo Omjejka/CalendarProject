@@ -71,7 +71,7 @@ void MainWindow::loadButton(QDate alpha, QString beta, int i)
         fstream file("DataBase.txt", ios::in);
         if(file.is_open()){
             while(getline(file, str, ';')){
-                if (c == i+1){
+                if (c == i-2){
                     ui->plainTextEdit->setPlainText(QString::fromStdString(str));
 
                 }
@@ -127,6 +127,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_addB_clicked()
 {
+    ui->redactB->setDisabled(0);
     checkB[cnt] = new QPushButton;
     checkB[cnt]->setFixedHeight(30);
     QDate date = ui->calendarWidget->selectedDate();
@@ -149,6 +150,8 @@ void MainWindow::on_addB_clicked()
 
 
     redact = new Redact;
+    connect(this, &MainWindow::selDate, redact, &Redact::getDate);
+    emit selDate(ui->calendarWidget->selectedDate());
     connect(redact, &Redact::signalForm, this, &MainWindow::SaveButton);
     redact->setModal(1);
     redact->show();
@@ -194,12 +197,37 @@ void MainWindow::DButton_Pressed(){
 
 void MainWindow::on_calendarWidget_selectionChanged()
 {
+    ui->plainTextEdit->clear();
     for(int i=0;i<cnt;i++){  // Цикл для очистки массивов. Продолжается до элемента cnt, чтобы не выйти за пределы массивов
         if (checkB[i] != NULL){ // Проверка элемента, соответственно, и всей строки на существование
             delete checkB[i]; // Освобождение памяти элемента
         }
     }
     cnt = 0;
+
+    using namespace std;{
+        int countstr = 3;
+        int chk = 0;
+        string str;
+        QDate tmp;
+        fstream file("DataBase.txt", ios::in);
+        if(file.is_open()){
+            while(getline(file, str, ';')){
+                if(!(countstr % 3)){
+                    if (QDate::fromString(QString::fromStdString(str),"dd/MM/yyyy") == ui->calendarWidget->selectedDate()){
+                        tmp = QDate::fromString(QString::fromStdString(str),"dd/MM/yyyy");
+                        chk = 1;
+                    }
+                }else if(chk){
+                    loadButton(tmp,QString::fromStdString(str), countstr);
+                    chk = 0;
+                }
+                countstr++;
+            }
+        }
+    }
+
+
 }
 
 
@@ -210,6 +238,8 @@ void MainWindow::on_redactB_clicked()
 {
 
     redact = new Redact;
+    connect(this, &MainWindow::selDate, redact, &Redact::getDate);
+    emit selDate(ui->calendarWidget->selectedDate());
     connect(redact, &Redact::signalForm, this, &MainWindow::SaveButton);
     redact->setModal(1);
     redact->show();
