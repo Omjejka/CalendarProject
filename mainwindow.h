@@ -31,6 +31,8 @@ private slots:
 
     void on_redactB_clicked();
 
+    void on_delB_clicked();
+
 private:
     Ui::MainWindow *ui;
     Redact *redact;

@@ -90,25 +90,48 @@ void MainWindow::loadButton(QDate alpha, QString beta, int i)
 void MainWindow::SaveButton(QDate alpha, QString beta, QString gamma)
 {
     using namespace std;
-    ofstream file("DataBase.txt", ios::app); //Создание или открытие файла
+    ofstream file("DataBase.txt", ios::app);
     QString str = alpha.toString("dd/MM/yyyy") + ';' + beta + ';' + gamma + ';';
-    if(file.is_open()){ //Проверка на открытость файла
+    if(file.is_open()){
         file << str.toStdString();
-//        for(int i=0;i<cnt;i++){
-//            if (checkB[i] != NULL){  //Проверка на существование
-//                str += checkB[i]->text().sliced(0,10) + ';' + checkB[i]->text().sliced(13) + ';';
-//                file << str.toStdString();
-//                file.flush(); //Нужно
-//                str = "";
-//            }
-//        }
     }
 
-    int i = 0;
-    while(!checkB[i]->isChecked()){
-        i++;
+    int j;
+    for(int i = 0; i < cnt; i++){
+        if(checkB[i] != NULL){
+            if(checkB[i]->isChecked()){
+                j = i;
+            }
+        }
     }
-    checkB[i]->setText(alpha.toString("dd/MM/yyyy") + " | " + beta);
+
+
+    for(int i=0;i<cnt;i++){
+        if (checkB[i] != NULL){
+            if(checkB[i]->isChecked()){
+                QString tmp = checkB[i]->text().replace(" | ", ";") + ';' + ui->plainTextEdit->toPlainText() + ';';
+                QString tmp2;
+                using namespace std;{
+                    string str;
+                    fstream file("DataBase.txt", ios::in);
+                    if(file.is_open()){
+                        while(getline(file, str, char(1))){
+                            tmp2 = QString::fromStdString(str).remove(tmp);
+                        }
+                        file.close();
+                    }
+                    fstream file1("DataBase.txt", ios::out);
+                    if(file1.is_open()){
+                        file1 << tmp2.toStdString();
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    checkB[j]->setText(alpha.toString("dd/MM/yyyy") + " | " + beta);
     ui->plainTextEdit->setPlainText(gamma);
 
 
@@ -127,7 +150,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_addB_clicked()
 {
-    ui->redactB->setDisabled(0);
     checkB[cnt] = new QPushButton;
     checkB[cnt]->setFixedHeight(30);
     QDate date = ui->calendarWidget->selectedDate();
@@ -201,6 +223,7 @@ void MainWindow::on_calendarWidget_selectionChanged()
     for(int i=0;i<cnt;i++){  // Цикл для очистки массивов. Продолжается до элемента cnt, чтобы не выйти за пределы массивов
         if (checkB[i] != NULL){ // Проверка элемента, соответственно, и всей строки на существование
             delete checkB[i]; // Освобождение памяти элемента
+            checkB[i] = NULL;
         }
     }
     cnt = 0;
@@ -226,8 +249,6 @@ void MainWindow::on_calendarWidget_selectionChanged()
             }
         }
     }
-
-
 }
 
 
@@ -236,16 +257,49 @@ void MainWindow::on_calendarWidget_selectionChanged()
 
 void MainWindow::on_redactB_clicked()
 {
-
-    redact = new Redact;
-    connect(this, &MainWindow::selDate, redact, &Redact::getDate);
-    emit selDate(ui->calendarWidget->selectedDate());
-    connect(redact, &Redact::signalForm, this, &MainWindow::SaveButton);
-    redact->setModal(1);
-    redact->show();
-
-
+    for(int i=0;i<cnt;i++){
+        if (checkB[i] != NULL){
+            if(checkB[i]->isChecked()){
+                redact = new Redact;
+                connect(this, &MainWindow::selDate, redact, &Redact::getDate);
+                emit selDate(ui->calendarWidget->selectedDate());
+                connect(redact, &Redact::signalForm, this, &MainWindow::SaveButton);
+                redact->setModal(1);
+                redact->show();
+            }
+        }
+    }
 }
 
 
+
+
+void MainWindow::on_delB_clicked()
+{
+    for(int i=0;i<cnt;i++){
+        if (checkB[i] != NULL){
+            if(checkB[i]->isChecked()){
+                QString tmp = checkB[i]->text().replace(" | ", ";") + ';' + ui->plainTextEdit->toPlainText() + ';';
+                QString tmp2;
+                using namespace std;{
+                    string str;
+                    fstream file("DataBase.txt", ios::in);
+                    if(file.is_open()){
+                        while(getline(file, str, char(1))){
+                            tmp2 = QString::fromStdString(str).remove(tmp);
+                        }
+                        file.close();
+                    }
+                    fstream file1("DataBase.txt", ios::out);
+                    if(file1.is_open()){
+                        file1 << tmp2.toStdString();
+                    }
+                }
+                delete checkB[i];
+                checkB[i] = NULL;
+            }
+        }
+    }
+    ui->plainTextEdit->setPlainText("");
+}
 

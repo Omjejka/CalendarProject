@@ -163,7 +163,7 @@
       <item row="0" column="0">
        <widget class="QPushButton" name="redactB">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
