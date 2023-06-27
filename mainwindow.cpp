@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->eventLay->setSpacing(5); //Установка пространства
+    SaveButton(QDate (2003,3,4), "Сейв ебать!", "А что заебумба");
 
 
 
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
                         chk = 1;
                     }
                 }else if(chk){
-                    loadButton(tmp,QString::fromStdString(str));
+                    loadButton(tmp,QString::fromStdString(str), countstr);
                     chk = 0;
                     }
                 countstr++;
@@ -40,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 }
 
-void MainWindow::loadButton(QDate alpha, QString beta)
+void MainWindow::loadButton(QDate alpha, QString beta, int i)
 {
     checkB[cnt] = new QPushButton;
     checkB[cnt]->setFixedHeight(30);
@@ -58,8 +59,45 @@ void MainWindow::loadButton(QDate alpha, QString beta)
         }
     }
     checkB[cnt]->setChecked(1);
+
+    using namespace std;{
+        int c = 0;
+        string str;
+        fstream file("DataBase.txt", ios::in);
+        if(file.is_open()){
+            while(getline(file, str, ';')){
+                if (c == i+1){
+                    ui->plainTextEdit->setPlainText(QString::fromStdString(str));
+
+                }
+                c++;
+            }
+        }
+    }
+
+
+
     cnt++;
 
+
+}
+
+void MainWindow::SaveButton(QDate alpha, QString beta, QString gamma)
+{
+    using namespace std;
+    ofstream file("DataBase1.txt", ios::app); //Создание или открытие файла
+    QString str = alpha.toString("dd/MM/yyyy") + ';' + beta + ';' + gamma + ';';
+    if(file.is_open()){ //Проверка на открытость файла
+        file << str.toStdString();
+//        for(int i=0;i<cnt;i++){
+//            if (checkB[i] != NULL){  //Проверка на существование
+//                str += checkB[i]->text().sliced(0,10) + ';' + checkB[i]->text().sliced(13) + ';';
+//                file << str.toStdString();
+//                file.flush(); //Нужно
+//                str = "";
+//            }
+//        }
+    }
 
 }
 
@@ -114,16 +152,24 @@ void MainWindow::DButton_Pressed(){
         mas++;
     }
     using namespace std;{
-        int count = (3 * mas) + 2;
+        int count = (3 * mas) + 1;
+        int c = 0;
+        QString tmp = dymB->text();
+        tmp.remove(0,13);
         string str;
         fstream file("DataBase.txt", ios::in);
         if(file.is_open()){
             while(getline(file, str, ';')){
-                if (count == 0){
+                if((count % 3)){
+                    if (QString::fromStdString(str) == tmp){
+                        c = 1;
+                    }
+                }else if(c){
                     ui->plainTextEdit->setPlainText(QString::fromStdString(str));
-
+                    c=0;
                 }
-                count--;
+                count++;
+
             }
         }
     }
@@ -141,23 +187,7 @@ void MainWindow::on_calendarWidget_selectionChanged()
 }
 
 
-void MainWindow::on_saveB_clicked()
-{
-    /*)  using namespace std;
-    ofstream file("Save.txt", ios::out); //Создание или открытие файла
-    ofstream file1("SaveNotes.txt", ios::out);
-    QString str;
-    if(file.is_open()){ //Проверка на открытость файла
-        for(int i=0;i<cnt;i++){
-            if (checkB[i] != NULL){  //Проверка на существование
-                a = checkB[i]->isChecked(); // Запись булевой переменной на состояние CheckB
-                file << a << ";"; //запись в файл
-                file.flush(); //Нужно
-                file1.flush();
-            }
-        }
-    } */
-}
+
 
 
 void MainWindow::on_redactB_clicked()

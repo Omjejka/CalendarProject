@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <redact.h>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -16,13 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void loadButton(QDate alpha, QString beta);
+    void loadButton(QDate alpha, QString beta, int i);
+    void SaveButton(QDate alpha, QString beta, QString gamma);
+
 private slots:
     void on_addB_clicked();
 
     void on_calendarWidget_selectionChanged();
-
-    void on_saveB_clicked();
 
     void DButton_Pressed();
 
