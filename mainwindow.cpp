@@ -14,7 +14,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->eventLay->setSpacing(5); //Установка пространства
-    SaveButton(QDate (2003,3,4), "Сейв ебать!", "А что заебумба");
+
+
+
+   // connect(redact, &Redact::signalForm, this, &MainWindow::SaveButton);
+
+
 
 
 
@@ -85,7 +90,7 @@ void MainWindow::loadButton(QDate alpha, QString beta, int i)
 void MainWindow::SaveButton(QDate alpha, QString beta, QString gamma)
 {
     using namespace std;
-    ofstream file("DataBase1.txt", ios::app); //Создание или открытие файла
+    ofstream file("DataBase.txt", ios::app); //Создание или открытие файла
     QString str = alpha.toString("dd/MM/yyyy") + ';' + beta + ';' + gamma + ';';
     if(file.is_open()){ //Проверка на открытость файла
         file << str.toStdString();
@@ -98,6 +103,16 @@ void MainWindow::SaveButton(QDate alpha, QString beta, QString gamma)
 //            }
 //        }
     }
+
+    int i = 0;
+    while(!checkB[i]->isChecked()){
+        i++;
+    }
+    checkB[i]->setText(alpha.toString("dd/MM/yyyy") + " | " + beta);
+    ui->plainTextEdit->setPlainText(gamma);
+
+
+
 
 }
 
@@ -134,6 +149,7 @@ void MainWindow::on_addB_clicked()
 
 
     redact = new Redact;
+    connect(redact, &Redact::signalForm, this, &MainWindow::SaveButton);
     redact->setModal(1);
     redact->show();
 }
@@ -192,8 +208,9 @@ void MainWindow::on_calendarWidget_selectionChanged()
 
 void MainWindow::on_redactB_clicked()
 {
-//    QPushButton* dymB = qobject_cast<QPushButton*>(sender());
+
     redact = new Redact;
+    connect(redact, &Redact::signalForm, this, &MainWindow::SaveButton);
     redact->setModal(1);
     redact->show();
 

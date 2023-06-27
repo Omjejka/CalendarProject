@@ -2,6 +2,8 @@
 #define REDACT_H
 
 #include <QDialog>
+#include <QDate>
+
 
 namespace Ui {
 class Redact;
@@ -22,6 +24,9 @@ private slots:
     void on_canB_clicked();
 
     void on_saveB_clicked();
+
+signals:
+    void signalForm(QDate a, QString b, QString c);
 
 };
 

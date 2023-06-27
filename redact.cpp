@@ -24,6 +24,10 @@ void Redact::on_canB_clicked()
 
 void Redact::on_saveB_clicked()
 {
-
+    QDate a = ui->dateEd->date();
+    QString b = ui->nameEd->text();
+    QString c = ui->desEd->toPlainText();
+    emit signalForm(a,b,c);
+    Redact::close();
 }
 

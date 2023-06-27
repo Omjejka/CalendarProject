@@ -18,6 +18,8 @@ public:
     ~MainWindow();
 
     void loadButton(QDate alpha, QString beta, int i);
+
+public slots:
     void SaveButton(QDate alpha, QString beta, QString gamma);
 
 private slots:
