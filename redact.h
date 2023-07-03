@@ -19,17 +19,22 @@ public:
 
 public slots:
     void getDate(QDate alpha);
+    void changeRejB(int alpha);
 
 private:
     Ui::Redact *ui;
+    int rejB;
 
 private slots:
     void on_canB_clicked();
 
     void on_saveB_clicked();
 
+    void on_Redact_rejected();
+
 signals:
     void signalForm(QDate a, QString b, QString c);
+    void cancel();
 
 };
 

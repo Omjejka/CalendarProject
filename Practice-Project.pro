@@ -11,15 +11,18 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    redact.cpp
+    redact.cpp \
+    sortbox.cpp
 
 HEADERS += \
     mainwindow.h \
-    redact.h
+    redact.h \
+    sortbox.h
 
 FORMS += \
     mainwindow.ui \
-    redact.ui
+    redact.ui \
+    sortbox.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
